@@ -1,0 +1,14 @@
+/* dashboard.css */
+
+.opening-balance {
+    top: 0;
+    margin-left: 140px;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .opening-balance {
+        top: 0;
+        margin-left: 75px;
+      }
+  }

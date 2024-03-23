@@ -1,0 +1,36 @@
+
+:root {
+  --header-height: 3rem;
+
+  --nav-width: 68px;
+
+  --first-color: black;
+
+  --first-color-light: white;
+  --hover-color: #9ADE7B;
+  --body-font: 'Nunito', sans-serif;
+
+  --normal-font-size: 1rem;
+
+  --z-fixed: 100
+}
+.dashboard {
+    margin-top: -65px;
+    margin-left: 124px;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+  }
+
+h4{
+  padding-left: 10px;
+}
+.dashboard-nav{
+  height: 72px;
+}
+  @media screen and (max-width: 768px) {
+    .dashboard {
+        margin-top: 0px;
+        margin-left: 68px;
+      }
+  }

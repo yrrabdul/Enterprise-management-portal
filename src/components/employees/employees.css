@@ -1,0 +1,52 @@
+
+.employees {
+  margin-top: -65px;
+  margin-left: 124px;
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+}
+
+h4{
+padding-left: 10px;
+}
+
+.employees-nav{
+height: 72px;
+}
+
+.employee-features{
+  margin-left: 125px;
+}
+
+.employee-card{
+  padding-top: 50px;
+}
+
+.employee-card .card.bg-light{
+  background-color: #E2F4C5 !important;
+}
+.employee-card .card.bg-light:hover {
+  border: 2px solid black;
+  transition: border 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.employee-card .card-body:hover i {
+  transform: rotate(360deg);
+  transition: transform 0.5s ease-in-out;
+}
+.employee-card .card {
+  height: 130px; 
+}
+
+
+@media screen and (max-width: 768px) {
+  .employees {
+      margin-top: 0px;
+      margin-left: 68px;
+    }
+    .employee-features{
+      margin-left: 65px;
+    }
+}

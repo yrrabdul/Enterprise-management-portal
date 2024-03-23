@@ -1,0 +1,48 @@
+.groups-main{
+    margin-left: 170px;
+    margin-top: 50px;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+  
+  .btn {
+    background-color: #9ADE7B;
+    color: black;
+    border: none;
+  }
+
+  .btn:hover{
+    background-color: black;
+    color: #9ADE7B;
+  }
+ 
+  .group-table{
+    width: 90%;
+    margin-top: 100px;
+  }
+  .group-table tbody tr:nth-child(even) {
+    background-color: #9ADE7B;
+  }
+  
+  .group-table tbody tr:nth-child(odd) {
+    background-color: white;
+  }
+  
+ .table-header{
+    background-color: #9ADE7B !important;
+ }
+
+
+  @media screen and (max-width: 768px) {
+      .groups-main{
+        margin-left: 85px;
+        margin-top: 0px;    
+
+      }
+      .container{
+        margin-top: 80px;
+      }
+  }
+

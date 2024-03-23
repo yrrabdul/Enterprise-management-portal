@@ -1,0 +1,14 @@
+/* dashboard.css */
+
+.settings {
+    top: 0;
+    margin-left: 140px;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .settings {
+        top: 0;
+        margin-left: 75px;
+      }
+  }

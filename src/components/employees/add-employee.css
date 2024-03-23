@@ -1,0 +1,54 @@
+.add-employee-main{
+    margin-left: 170px;
+    margin-top: 50px;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+    padding: 20px;
+  }
+  
+  .form-control {
+    margin-bottom: 10px;
+  }
+  
+  .form-check-label {
+    margin-left: 5px;
+  }
+  
+  .btn {
+    margin-right: 10px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #f2f2f2;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .add-employee-main{
+        margin-left: 85px;
+        margin-top: 0px;    
+  
+      }
+      .container{
+        margin-top: 80px;
+      }
+    .col-md-6 {
+      width: 100%;
+    }
+  }
+

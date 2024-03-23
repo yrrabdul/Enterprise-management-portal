@@ -1,0 +1,14 @@
+/* dashboard.css */
+
+.vehicle {
+    top: 0;
+    margin-left: 140px;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .vehicle {
+        top: 0;
+        margin-left: 75px;
+      }
+  }

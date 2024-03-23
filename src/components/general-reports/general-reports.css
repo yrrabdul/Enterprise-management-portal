@@ -1,0 +1,14 @@
+/* dashboard.css */
+
+.general-reports {
+    top: 0;
+    margin-left: 140px;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .general-reports {
+        top: 0;
+        margin-left: 75px;
+      }
+  }
