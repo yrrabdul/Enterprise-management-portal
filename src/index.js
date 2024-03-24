@@ -24,6 +24,7 @@ import Stock from './components/stock/stock';
 import Vehicle from './components/vehicle/vehicle';
 import EmployeeGroups from './components/employees/employee-groups';
 import AddEmployeePage from './components/employees/add-employee';
+import EmployeeSalaryPage from './components/employees/employee-salary';
 
 
 // New Component to combine Employees and EmployeeModules
@@ -55,6 +56,15 @@ const AddEmployee = () => {
     </>
   );
 };
+// New Component to combine Employees and AddEmployeePage
+const EmployeeSalary= () => {
+  return (
+    <>
+      <Employees />
+      <EmployeeSalaryPage />
+    </>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -72,6 +82,7 @@ root.render(
         <Route path="/employees" element={<EmployeeMain />} />
         <Route path="/employees/employee-groups" element={<EmployeeGrps />} />
         <Route path="/employees/add-employee" element={<AddEmployee />} />
+        <Route path="/employees/employee-salary" element={<EmployeeSalary />} />
         <Route path="/documents" element={<Documents />} />
         <Route path="/general-reports" element={<GeneralReports />} />
         <Route path="/purchase" element={<Purchase />} />
