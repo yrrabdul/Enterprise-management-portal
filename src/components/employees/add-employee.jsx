@@ -166,8 +166,9 @@ const AddEmployeePage = () => {
                                             </div>
                                         ) : (
                                             <div>
-                                                {activeStatus}
-                                                <button className="btn btn-info mt-2" onClick={handleEdit}>Edit</button>
+                                                
+                                                {activeStatus} <button className="btn btn-info mt-2" onClick={handleEdit}>Edit</button>
+                                                
                                             </div>
                                         )}
                                     </td>

@@ -46,7 +46,7 @@ const EmployeeSalaryPage = () => {
         code: 1,
         name: 'John Doe',
         groupName: 'Engineering',
-        salary: '$5000'
+        salary: '$5000' 
     };
 
     // Dummy entry for hourly salary table
@@ -114,13 +114,17 @@ const EmployeeSalaryPage = () => {
                                     <td>{salaryType === 'monthly' ? monthlyDummyEntry.code : hourlyDummyEntry.code}</td>
                                     <td>{salaryType === 'monthly' ? monthlyDummyEntry.name : hourlyDummyEntry.name}</td>
                                     <td>{salaryType === 'monthly' ? monthlyDummyEntry.groupName : hourlyDummyEntry.groupName}</td>
-                                    {salaryType === 'monthly' && <td>{monthlyDummyEntry.salary}</td>}
+                                    {salaryType === 'monthly' && <td>{monthlyDummyEntry.salary} <button className="btn btn-sm btn-primary">Edit</button></td>}
                                     {salaryType === 'hourly' && (
                                         <>
-                                            <td>{hourlyDummyEntry.normalRate}</td>
-                                            <td>{hourlyDummyEntry.overTimeRate}</td>
+                                            <td>{hourlyDummyEntry.normalRate}  <button className="btn btn-sm btn-primary">Edit</button></td>
+                                            <td>{hourlyDummyEntry.overTimeRate}   <button className="btn btn-sm btn-primary">Edit</button></td>
+                                           
+                                     
+       
                                         </>
                                     )}
+                                    
                                 </tr>
                                 {employees.map(employee => (
                                     <tr key={employee.code}>
