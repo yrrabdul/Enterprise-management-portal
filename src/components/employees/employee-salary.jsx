@@ -1,5 +1,3 @@
-// employee-salary.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './employee-salary.css';
@@ -13,7 +11,7 @@ const EmployeeSalaryPage = () => {
     useEffect(() => {
         fetchGroups();
         fetchEmployees();
-    }, []);
+    }, [salaryType, selectedGroup]);
 
     const fetchGroups = async () => {
         try {
@@ -26,8 +24,13 @@ const EmployeeSalaryPage = () => {
 
     const fetchEmployees = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/getemployees');
-            setEmployees(response.data);
+            const response = await axios.get('http://localhost:5000/api/getemployees', {
+                params: {
+                    salaryType: salaryType ,
+                    groupName: selectedGroup
+                }
+            });
+            setEmployees(response.data)
         } catch (error) {
             console.error('Error fetching employees:', error);
         }
@@ -39,23 +42,6 @@ const EmployeeSalaryPage = () => {
 
     const handleGroupChange = (e) => {
         setSelectedGroup(e.target.value);
-    };
-
-    // Dummy entry for monthly salary table
-    const monthlyDummyEntry = {
-        code: 1,
-        name: 'John Doe',
-        groupName: 'Engineering',
-        salary: '$5000' 
-    };
-
-    // Dummy entry for hourly salary table
-    const hourlyDummyEntry = {
-        code: 2,
-        name: 'Jane Smith',
-        groupName: 'Sales',
-        normalRate: '$20/hour',
-        overTimeRate: '$30/hour'
     };
 
     return (
@@ -88,12 +74,7 @@ const EmployeeSalaryPage = () => {
                 </div>
                 <div className="row mt-4">
                     <div className="col-md-12">
-                        {salaryType === 'monthly' && (
-                            <h2>Employee Salary Table (Monthly)</h2>
-                        )}
-                        {salaryType === 'hourly' && (
-                            <h2>Employee Salary Table (Hourly)</h2>
-                        )}
+                        <h2>Employee Salary Table ({salaryType === 'monthly' ? 'Monthly' : 'Hourly'})</h2>
                         <table className="table">
                             <thead>
                                 <tr>
@@ -110,36 +91,38 @@ const EmployeeSalaryPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>{salaryType === 'monthly' ? monthlyDummyEntry.code : hourlyDummyEntry.code}</td>
-                                    <td>{salaryType === 'monthly' ? monthlyDummyEntry.name : hourlyDummyEntry.name}</td>
-                                    <td>{salaryType === 'monthly' ? monthlyDummyEntry.groupName : hourlyDummyEntry.groupName}</td>
-                                    {salaryType === 'monthly' && <td>{monthlyDummyEntry.salary} <button className="btn btn-sm btn-primary">Edit</button></td>}
-                                    {salaryType === 'hourly' && (
-                                        <>
-                                            <td>{hourlyDummyEntry.normalRate}  <button className="btn btn-sm btn-primary">Edit</button></td>
-                                            <td>{hourlyDummyEntry.overTimeRate}   <button className="btn btn-sm btn-primary">Edit</button></td>
-                                           
-                                     
-       
-                                        </>
-                                    )}
-                                    
-                                </tr>
-                                {employees.map(employee => (
-                                    <tr key={employee.code}>
-                                        <td>{employee.code}</td>
-                                        <td>{employee.name}</td>
-                                        <td>{employee.groupName}</td>
-                                        {salaryType === 'monthly' && <td>{employee.salary}</td>}
-                                        {salaryType === 'hourly' && (
-                                            <>
-                                                <td>{employee.normalRate}</td>
-                                                <td>{employee.overTimeRate}</td>
-                                            </>
-                                        )}
-                                    </tr>
-                                ))}
+                            {employees.map(employee => {
+                                // Check if salaryType is 'hourly' and both normalRate and overRate are not null or empty
+                                if (salaryType === 'hourly' && employee.normalRate && employee.overRate) {
+                                    // Check if the employee's group name matches the selected group
+                                    if (selectedGroup === 'all' || employee.groupName === selectedGroup) {
+                                        return (
+                                            <tr key={employee.empID}>
+                                                <td>{employee.empID}</td>
+                                                <td>{employee.empName}</td>
+                                                <td>{employee.groupName}</td>
+                                                <td>{employee.normalRate}  <button className="btn btn-sm btn-primary">Edit</button></td>
+                                                <td>{employee.overRate} <button className="btn btn-sm btn-primary">Edit</button></td>
+                                            </tr>
+                                        );
+                                    }
+                                }
+                                // Check if salaryType is 'monthly' and monthlySalary is not null or empty
+                                else if (salaryType === 'monthly' && employee.monthlySalary) {
+                                    // Check if the employee's group name matches the selected group
+                                    if (selectedGroup === 'all' || employee.groupName === selectedGroup) {
+                                        return (
+                                            <tr key={employee.empID}>
+                                                <td>{employee.empID}</td>
+                                                <td>{employee.empName}</td>
+                                                <td>{employee.groupName}</td>
+                                                <td>{employee.monthlySalary}<button className="btn btn-sm btn-primary">Edit</button></td>
+                                            </tr>
+                                        );
+                                    }
+                                }
+                                return null; // Don't render anything if conditions are not met
+                            })}
                             </tbody>
                         </table>
                     </div>
@@ -150,3 +133,4 @@ const EmployeeSalaryPage = () => {
 };
 
 export default EmployeeSalaryPage;
+
