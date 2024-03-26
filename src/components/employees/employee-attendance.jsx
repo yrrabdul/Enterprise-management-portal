@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './employee-attendance.css';
 
 const EmployeeAttendance = () => {
+  // Function to get today's date in the format yyyy-mm-dd
+  const today = new Date().toISOString().split('T')[0];
+
   // State variables
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(today); // Default to today's date
   const [salaryType, setSalaryType] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
   const [attendanceData, setAttendanceData] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [dummyProjects, setDummyProjects] = useState(['Project A', 'Project B', 'Project C']); // Dummy project names
+
+  useEffect(() => {
+    fetchGroups();
+  }, []);
+
+  // Function to fetch group names
+  const fetchGroups = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/getgroups');
+      setGroups(response.data);
+    } catch (error) {
+      console.error('Error fetching groups:', error);
+    }
+  };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -25,7 +45,7 @@ const EmployeeAttendance = () => {
           <div className="row mb-3">
             <div className="col-md-6">
               <label htmlFor="date" className="form-label">Select Date:</label>
-              <input type="date" id="date" className="form-control" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+              <input type="date" id="date" className="form-control" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} max={today} />
             </div>
             <div className="col-md-6">
               <label htmlFor="salaryType" className="form-label">Select Salary Type:</label>
@@ -41,13 +61,19 @@ const EmployeeAttendance = () => {
             <div className="col-md-6">
               <label htmlFor="group" className="form-label">Select Group:</label>
               <select id="group" className="form-select" value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}>
-                {/* Options for selecting group */}
+                <option value="">Select Group</option>
+                {groups.map(group => (
+                  <option key={group._id} value={group.groupName}>{group.groupName}</option>
+                ))}
               </select>
             </div>
             <div className="col-md-6">
               <label htmlFor="project" className="form-label">Select Project:</label>
               <select id="project" className="form-select" value={selectedProject} onChange={(e) => setSelectedProject(e.target.value)}>
-                {/* Options for selecting project */}
+                <option value="">Select Project</option>
+                {dummyProjects.map(project => (
+                  <option key={project} value={project}>{project}</option>
+                ))}
               </select>
             </div>
           </div>
