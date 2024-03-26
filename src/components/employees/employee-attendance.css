@@ -1,0 +1,13 @@
+.attendance-main{
+    margin-left: 170px;
+    display: flex;
+  }
+
+
+@media screen and (max-width: 768px) {
+    .attendance-main{
+      margin-left: 85px;
+      margin-top: 0px;
+
+    }
+}

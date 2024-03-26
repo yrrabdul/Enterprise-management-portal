@@ -19,24 +19,31 @@
   }
   
   .btn {
-    margin-right: 10px;
+    background-color: #9ADE7B;
+    color: black;
+    border: none;
+  }
+
+  .btn:hover{
+    background-color: black;
+    color: #9ADE7B;
+  }
+ 
+  .add-employee-table{
+    width: 90%;
+    margin-top: 40px;
+  }
+  .add-employee-table tbody tr:nth-child(even) {
+    background-color: #9ADE7B;
   }
   
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  .add-employee-table tbody tr:nth-child(odd) {
+    background-color: white;
   }
   
-  .table th, .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #f2f2f2;
-  }
+ .table-header{
+    background-color: #9ADE7B !important;
+ }
   
   
   @media screen and (max-width: 768px) {
@@ -48,10 +55,6 @@
       .container{
         margin-top: 80px;
       }
-    .col-md-6 {
-      width: 100%;
-    }
-    
   
   }
 

@@ -1,0 +1,24 @@
+.issue-main{
+    margin-left: 170px;
+    margin-top: 0px;
+    width: 60%;
+  }
+
+  .issue-submain{
+    margin-top: 40px;
+  }
+
+@media screen and (max-width: 768px) {
+    .issue-main{
+      margin-left: 85px;
+
+    }
+    .issue-submain{
+        margin-top: 80px;
+      }
+      .select-dropdown option {
+        background-color: #9ADE7B;
+        font-size: 8px;
+        color: black;
+    }
+}

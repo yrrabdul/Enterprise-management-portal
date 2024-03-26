@@ -1,9 +1,9 @@
 .groups-main{
     margin-left: 170px;
-    margin-top: 50px;
+    margin-top: 0px;
     display: flex;
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
   }
 
   
