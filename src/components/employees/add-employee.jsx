@@ -114,6 +114,7 @@ const AddEmployeePage = () => {
                 document: null
             });
             alert('Employee added successfully');
+            fetchEmployees();
         } catch (error) {
             console.error('Error adding employee:', error);
             alert('Error adding employee');
@@ -162,6 +163,16 @@ const AddEmployeePage = () => {
 
     const handleRadioChange = (e) => {
         setSelectedStatus(e.target.value);
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:5000/api/deleteemployee/${id}`);
+            fetchEmployees(); // Refresh the list of employees after deletion
+        } catch (error) {
+            console.error('Error deleting employee:', error);
+            alert('Error deleting employee');
+        }
     };
 
     return (
@@ -310,8 +321,11 @@ const AddEmployeePage = () => {
                                             <button className="btn btn" onClick={() => handleEditRow(employee)}>Edit</button>
                                         </td>
                                         <td>
-                                            <button className="btn btn">Delete</button>
+                                            <div key={employee.empID}>
+                                                <button className="btn btn-danger" onClick={() => handleDelete(employee._id)}>Delete</button>
+                                            </div>
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>
