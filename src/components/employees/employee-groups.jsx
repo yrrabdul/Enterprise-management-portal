@@ -101,8 +101,8 @@ const EmployeeGroups = () => {
                       ) : ( group.groupName)}
                     </td>
                     <td>
-                      <button className="btn btn-danger" onClick={() => handleDeleteGroup(group._id)}>Delete</button>{' '}
-                      <button className="btn btn-warning" onClick={() => setEditGroupId(group._id)}>Edit</button>
+                      <button className="btn" onClick={() => handleDeleteGroup(group._id)}>Delete</button>{' '}
+                      <button className="btn" onClick={() => setEditGroupId(group._id)}>Edit</button>
                     </td>
                   </tr>
                 ))}

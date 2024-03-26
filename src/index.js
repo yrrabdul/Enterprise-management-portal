@@ -25,6 +25,8 @@ import Vehicle from './components/vehicle/vehicle';
 import EmployeeGroups from './components/employees/employee-groups';
 import AddEmployeePage from './components/employees/add-employee';
 import EmployeeSalaryPage from './components/employees/employee-salary';
+import EmployeeAttendance from './components/employees/employee-attendance';
+import EmployeesIssue from './components/employees/employee-issue';
 
 
 // New Component to combine Employees and EmployeeModules
@@ -66,6 +68,26 @@ const EmployeeSalary= () => {
   );
 };
 
+// New Component to combine Employees and EmplyeeIssue
+const ProjectIssue= () => {
+  return (
+    <>
+      <Employees />
+      <EmployeesIssue />
+    </>
+  );
+};
+
+// New Component to combine Employees and EmplyeeIssue
+const Attendance= () => {
+  return (
+    <>
+      <Employees />
+      <EmployeeAttendance />
+    </>
+  );
+};
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -83,6 +105,8 @@ root.render(
         <Route path="/employees/employee-groups" element={<EmployeeGrps />} />
         <Route path="/employees/add-employee" element={<AddEmployee />} />
         <Route path="/employees/employee-salary" element={<EmployeeSalary />} />
+        <Route path="/employees/employee-issue" element={<ProjectIssue />} />
+        <Route path="/employees/employee-attendance" element={<Attendance />} />
         <Route path="/documents" element={<Documents />} />
         <Route path="/general-reports" element={<GeneralReports />} />
         <Route path="/purchase" element={<Purchase />} />

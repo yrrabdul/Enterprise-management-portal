@@ -73,19 +73,19 @@ const EmployeeSalaryPage = () => {
                     </div>
                 </div>
                 <div className="row mt-4">
-                    <div className="col-md-12">
+                    <div className="col-md-12 col-md-6 col-sm-4">
                         <h2>Employee Salary Table ({salaryType === 'monthly' ? 'Monthly' : 'Hourly'})</h2>
-                        <table className="table">
+                        <table className="table salary-table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Code #</th>
-                                    <th>Name</th>
-                                    <th>Group Name</th>
-                                    {salaryType === 'monthly' && <th>Salary</th>}
+                                    <th className='table-header'>Code #</th>
+                                    <th className='table-header'>Name</th>
+                                    <th className='table-header'>Group Name</th>
+                                    {salaryType === 'monthly' && <th className='table-header'>Salary</th>}
                                     {salaryType === 'hourly' && (
                                         <>
-                                            <th>Normal Rate</th>
-                                            <th>Over Time Rate</th>
+                                            <th className='table-header'>Normal Rate</th>
+                                            <th className='table-header'>Over Time Rate</th>
                                         </>
                                     )}
                                 </tr>
@@ -101,8 +101,8 @@ const EmployeeSalaryPage = () => {
                                                 <td>{employee.empID}</td>
                                                 <td>{employee.empName}</td>
                                                 <td>{employee.groupName}</td>
-                                                <td>{employee.normalRate}  <button className="btn btn-sm btn-primary">Edit</button></td>
-                                                <td>{employee.overRate} <button className="btn btn-sm btn-primary">Edit</button></td>
+                                                <td>{employee.normalRate}  <button className="btn btn-sm">Edit</button></td>
+                                                <td>{employee.overRate} <button className="btn btn-sm">Edit</button></td>
                                             </tr>
                                         );
                                     }

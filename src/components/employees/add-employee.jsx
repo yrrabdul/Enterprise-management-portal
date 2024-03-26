@@ -172,7 +172,7 @@ const AddEmployeePage = () => {
                         <h2>Add Employee</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="row mb-4">
-                                <div className="col">
+                                <div className="col-md-6">
                                     <h5>Personal Info</h5>
                                 </div>
                             </div>
@@ -239,25 +239,25 @@ const AddEmployeePage = () => {
                             <div className="input-group mb-4">
                                 <input type="file" className="form-control" name="document" id="fileUpload" onChange={handleFileChange} />
                             </div>
-                            <button type="submit" className="btn btn-primary">Save</button>
+                            <button type="submit" className="btn btn">Save</button>
                         </form>
                     </div>
                 </div>
                 <div className="row mt-4">
-                    <div className="col-md-12">
+                    <div className="col-md-6 col-lg-12 col-sm-4">
                         <h2>All Employees</h2>
-                        <table className="table">
+                        <table className="table add-employee-table table-striped ">
                             <thead>
                                 <tr>
-                                    <th>Code #</th>
-                                    <th>Name</th>
-                                    <th>Contact Number</th>
-                                    <th>Group</th>
-                                    <th>Salary/Rate</th>
-                                    <th>Picture</th>
-                                    <th>Active/Non-Active</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th className='table-header'>Code #</th>
+                                    <th className='table-header'>Name</th>
+                                    <th className='table-header'>Contact Number</th>
+                                    <th className='table-header'>Group</th>
+                                    <th className='table-header'>Salary/Rate</th>
+                                    <th className='table-header'>Picture</th>
+                                    <th className='table-header'>Active/Non-Active</th>
+                                    <th className='table-header'>Edit</th>
+                                    <th className='table-header'>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -298,7 +298,7 @@ const AddEmployeePage = () => {
                                                     />
                                                     <label className="form-check-label" htmlFor="nonActiveRadio">Non-Active</label>
                                                     <br />
-                                                    <button className="btn btn-primary" onClick={() => handleSave(employee)}>Save</button>
+                                                    <button className="btn" onClick={() => handleSave(employee)}>Save</button>
                                                 </div>
                                             ) : (
                                                 <div>
@@ -307,10 +307,10 @@ const AddEmployeePage = () => {
                                             )}
                                         </td>
                                         <td>
-                                            <button className="btn btn-warning" onClick={() => handleEditRow(employee)}>Edit</button>
+                                            <button className="btn btn" onClick={() => handleEditRow(employee)}>Edit</button>
                                         </td>
                                         <td>
-                                            <button className="btn btn-danger">Delete</button>
+                                            <button className="btn btn">Delete</button>
                                         </td>
                                     </tr>
                                 ))}
