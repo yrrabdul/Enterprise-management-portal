@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors'); 
 
-const Addgroup = require('./src/components/models/Addgroup');
-const Addemployee = require('./src/components/models/Addemployee');
+const Addgroup = require('./src/models/Addgroup');
+const Addemployee = require('./src/models/Addemployee');
 
 // Import routes
-const addgroupRoutes = require('./src/components/routes/Addgroup');
-const addEmployeeRoutes = require('./src/components/routes/Addemployee');
+const addgroupRoutes = require('./src/routes/Addgroup');
+const addEmployeeRoutes = require('./src/routes/Addemployee');
 
 const app = express();
 const port = 5000;
