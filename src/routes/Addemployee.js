@@ -87,6 +87,48 @@ router.put('/updateactive/:id', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+//route to update monthly salary of employee
+router.put('/updateMonthly/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { monthlySalary } = req.body;
+
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, { monthlySalary }, { new: true });
+
+        res.status(200).json(updatedEmployee);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to update overtime rate of employee
+router.put('/updateOverRate/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { overRate } = req.body;
+
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, { overRate }, { new: true });
+
+        res.status(200).json(updatedEmployee);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to update normal rate of employee
+router.put('/updateNormalRate/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { normalRate } = req.body;
+
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, { normalRate }, { new: true });
+
+        res.status(200).json(updatedEmployee);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 
 module.exports = router;

@@ -7,6 +7,12 @@ const EmployeeSalaryPage = () => {
     const [groups, setGroups] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState('all');
     const [employees, setEmployees] = useState([]);
+    const [editEmployeeId, setEditEmployeeId] = useState(null);
+    const [editNormalRateId, setEditNormalRateId] = useState(null);
+    const [editOverRateId, setEditOverRateId] = useState(null);
+    const [editedNormalRate, setEditedNormalRate] = useState('');
+    const [editedOverRate, setEditedOverRate] = useState('');  
+    const [monthlySalary, setMonthlySalary] = useState('');
 
     useEffect(() => {
         fetchGroups();
@@ -43,8 +49,58 @@ const EmployeeSalaryPage = () => {
     const handleGroupChange = (e) => {
         setSelectedGroup(e.target.value);
     };
+   // for updating monthly Salary
+    const handleEditSalary = async (id, newMonthlySalary) => {
+        try {
+            await axios.put(`http://localhost:5000/api/updateMonthly/${id}`, { monthlySalary: newMonthlySalary });
+            const updatedEmployees = employees.map(employee => {
+                if (employee._id === id) {
+                    return { ...employee, monthlySalary: newMonthlySalary };
+                }
+                return employee;
+            });
+            setEmployees(updatedEmployees);
+            setEditEmployeeId(null); // Close edit mode after successful update
+        } catch (error) {
+            console.error('Error updating employee salary:', error);
+        }
+    };
 
-    return (
+    // Function to handle editing normal rate salary
+    const handleEditNormalRateSalary = async (id, newNormalRate) => {
+        try {
+            await axios.put(`http://localhost:5000/api/updateNormalRate/${id}`, { normalRate: newNormalRate });
+            const updatedEmployees = employees.map(employee => {
+                if (employee._id === id) {
+                    return { ...employee, normalRate: newNormalRate };
+                }
+                return employee;
+            });
+            setEmployees(updatedEmployees);
+            setEditNormalRateId(null); // Close edit mode after successful update
+        } catch (error) {
+            console.error('Error updating employee salary:', error);
+        }
+    };
+
+    // Function to handle editing over rate salary
+    const handleEditOverRateSalary = async (id, newOverRate) => {
+        try {
+            await axios.put(`http://localhost:5000/api/updateOverRate/${id}`, { overRate: newOverRate });
+            const updatedEmployees = employees.map(employee => {
+                if (employee._id === id) {
+                    return { ...employee, overRate: newOverRate };
+                }
+                return employee;
+            });
+            setEmployees(updatedEmployees);
+            setEditOverRateId(null); // Close edit mode after successful update
+        } catch (error) {
+            console.error('Error updating employee salary:', error);
+        }
+    };
+   
+   return (
         <section className='employee-salary-main'>
             <div className="container">
                 <div className="row mt-4">
@@ -101,8 +157,53 @@ const EmployeeSalaryPage = () => {
                                                 <td>{employee.empID}</td>
                                                 <td>{employee.empName}</td>
                                                 <td>{employee.groupName}</td>
-                                                <td>{employee.normalRate}  <button className="btn btn-sm">Edit</button></td>
-                                                <td>{employee.overRate} <button className="btn btn-sm">Edit</button></td>
+                                                <td>
+                                                {editNormalRateId === employee._id ? (
+                                                    <div>
+                                                        <input 
+                                                            type="text" 
+                                                            defaultValue={employee.normalRate} 
+                                                            onChange={(e) => setEditedNormalRate(e.target.value)} 
+                                                        />
+                                                        <button onClick={() => handleEditNormalRateSalary(employee._id, editedNormalRate)}>Save</button>
+                                                        <button onClick={() => setEditNormalRateId(null)}>Cancel</button>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        {employee.normalRate}
+                                                        <button 
+                                                            className="btn btn-sm btn-primary"
+                                                            onClick={() => setEditNormalRateId(employee._id)}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </td>
+                                            <td>
+                                                {editOverRateId === employee._id ? (
+                                                    <div>
+                                                        <input 
+                                                            type="text" 
+                                                            defaultValue={employee.overRate} 
+                                                            onChange={(e) => setEditedOverRate(e.target.value)} 
+                                                        />
+                                                        <button onClick={() => handleEditOverRateSalary(employee._id, editedOverRate)}>Save</button>
+                                                        <button onClick={() => setEditOverRateId(null)}>Cancel</button>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        {employee.overRate}
+                                                        <button 
+                                                            className="btn btn-sm btn-primary"
+                                                            onClick={() => setEditOverRateId(employee._id)}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </td>
+                                                
                                             </tr>
                                         );
                                     }
@@ -116,12 +217,36 @@ const EmployeeSalaryPage = () => {
                                                 <td>{employee.empID}</td>
                                                 <td>{employee.empName}</td>
                                                 <td>{employee.groupName}</td>
-                                                <td>{employee.monthlySalary}<button className="btn btn-sm btn-primary">Edit</button></td>
+                                                <td>
+                                                {editEmployeeId === employee._id ? (
+                                                    <div>
+                                                    <input 
+                                                        type="text" 
+                                                        defaultValue={employee.monthlySalary} 
+                                                        onChange={(e) => setMonthlySalary(e.target.value)} 
+                                                    />
+                                                    <button onClick={() => handleEditSalary(employee._id, monthlySalary)}>Save</button>
+                                                    <button onClick={() => setEditEmployeeId(null)}>Cancel</button>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                    {employee.monthlySalary}
+                                                    <button 
+                                                        className="btn btn-sm btn-primary"
+                                                        onClick={() => setEditEmployeeId(employee._id)}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    </>
+                                                )}
+                                                </td>
+
+                                                {/* <td>{employee.monthlySalary}<button className="btn btn-sm btn-primary"onClick={() => handleEditSalary(employee._id, employee.monthlySalary)}>Edit</button></td> */}
                                             </tr>
                                         );
                                     }
                                 }
-                                return null; // Don't render anything if conditions are not met
+                                return null; 
                             })}
                             </tbody>
                         </table>
