@@ -52,7 +52,7 @@ router.put('/updateemployee/:id', async (req, res) => {
         employee.normalRate = normalRate;
         employee.overRate = overRate;
         employee.picture = picture;
-        employee.document = document;
+        // employee.document = document;
         employee.active = active;
 
         // Save updated employee
