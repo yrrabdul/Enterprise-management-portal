@@ -88,5 +88,29 @@ router.put('/updateactive/:id', async (req, res) => {
     }
 });
 
+// Route to assign projects to an employee by ID
+router.post('/assignprojects/:id', async (req, res) => {
+    const { id } = req.params;
+    const { projects } = req.body;
 
+    try {
+        // Find the employee by ID
+        const employee = await Employee.findById(id);
+
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        // Assign projects to the employee
+        employee.projects = projects;
+
+        // Save the updated employee
+        await employee.save();
+
+        res.status(200).json({ message: 'Projects assigned successfully', employee });
+    } catch (error) {
+        console.error('Error assigning projects:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 module.exports = router;

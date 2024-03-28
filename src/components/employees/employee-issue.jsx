@@ -41,19 +41,21 @@ const EmployeeIssue = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post('http://localhost:5000/api/addissue', {
-        selectedProjects,
-        selectedEmployee,
-        startDate,
-        endDate
+      // Send a request to the backend API to assign projects
+      const response = await axios.post(`http://localhost:5000/api/assignprojects/${selectedEmployee}`, {
+        projects: selectedProjects // Send the selected projects
       });
-      console.log('Issue added:', response.data);
+
+      console.log('Projects assigned successfully:', response.data);
+
       // Reset form fields
       setSelectedProjects([]);
       setSelectedEmployee('');
       setStartDate('');
       setEndDate('');
+
       // Show alert upon successful submission
       setShowAlert(true);
       // Hide alert after 3 seconds
@@ -61,7 +63,7 @@ const EmployeeIssue = () => {
         setShowAlert(false);
       }, 3000);
     } catch (error) {
-      console.error('Error adding issue:', error);
+      console.error('Error assigning projects:', error);
     }
   };
 

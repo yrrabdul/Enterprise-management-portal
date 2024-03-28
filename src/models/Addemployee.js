@@ -6,56 +6,58 @@ const EmployeeSchema = new mongoose.Schema({
         required: true 
     },
     empID: {
-         type: String, 
-         required: true
-         },
+        type: String, 
+        required: true
+    },
     fatherName: {
-         type: String, 
-         required: true
-         },
+        type: String, 
+        required: true
+    },
     cnic: {
-         type: String,
-         required: true,
-         unique: true
-
-         },
+        type: String,
+        required: true,
+        unique: true
+    },
     contactNumber: { 
         type: String, 
         required: true
-     },
+    },
     referenceName: { 
         type: String 
     },
     referenceNumber: {
-         type: String 
-        },
+        type: String 
+    },
     groupName: {
-         type: String,
-         required: true
-         },
+        type: String,
+        required: true
+    },
     salaryType: { 
         type: String,
-          required: true
-         },
+        required: true
+    },
     monthlySalary: {
-         type: Number
-         },
+        type: Number
+    },
     overRate: {
-         type: Number
-         },
+        type: Number
+    },
     normalRate: {
-         type: Number
-         },
+        type: Number
+    },
     picture: {
-         type: String
-         }, 
+        type: String
+    }, 
     active: {
-         type: String,
-           default: 'Active' 
-        },
+        type: String,
+        default: 'Active' 
+    },
     document: {
         type: String
-    }
+    },
+    projects: [{ 
+        type: String // Assuming project names are strings
+    }]
 });
 
 module.exports = mongoose.model('Employee', EmployeeSchema);

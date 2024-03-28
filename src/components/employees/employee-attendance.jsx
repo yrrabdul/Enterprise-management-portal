@@ -13,7 +13,10 @@ const EmployeeAttendance = () => {
   const [selectedProject, setSelectedProject] = useState('');
   const [attendanceData, setAttendanceData] = useState([]);
   const [groups, setGroups] = useState([]);
-  const [dummyProjects, setDummyProjects] = useState(['Project A', 'Project B', 'Project C']); // Dummy project names
+  const [employees, setEmployees] = useState([]);
+
+  // Hardcoded dummy projects
+  const dummyProjects = ['Project A', 'Project B', 'Project C'];
 
   useEffect(() => {
     fetchGroups();
@@ -29,12 +32,46 @@ const EmployeeAttendance = () => {
     }
   };
 
-  // Function to handle form submission
+  const fetchEmployees = async () => {
+    if (!selectedGroup || !selectedProject || !salaryType) {
+      // If any of the parameters are empty, show an alert and return early without making the API call
+      alert('Please select all criteria (Group, Project, Salary Type) before fetching employees.');
+      return;
+    }
+  
+    try {
+      const response = await axios.get('http://localhost:5000/api/getemployees', {
+        params: {
+          group: selectedGroup,
+          project: selectedProject,
+          salaryType: salaryType
+        }
+      });
+      setEmployees(response.data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+  
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to handle form submission (e.g., upload Excel sheet, mark attendance)
-    // Parse Excel sheet and update attendanceData accordingly
-    console.log('Form submitted');
+    fetchEmployees(); // Fetch employees based on selected criteria
+  };
+
+  // Handle salary type change
+  const handleSalaryTypeChange = (e) => {
+    setSalaryType(e.target.value);
+  };
+
+  // Handle group selection change
+  const handleGroupChange = (e) => {
+    setSelectedGroup(e.target.value);
+  };
+
+  // Handle project selection change
+  const handleProjectChange = (e) => {
+    setSelectedProject(e.target.value);
   };
 
   return (
@@ -43,33 +80,32 @@ const EmployeeAttendance = () => {
         <h2 className="text-center mb-4">Employee Attendance</h2>
         <form onSubmit={handleSubmit}>
           <div className="row mb-3">
-            <div className="col-md-6">
+            <div className="col-md-4">
               <label htmlFor="date" className="form-label">Select Date:</label>
               <input type="date" id="date" className="form-control" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} max={today} />
             </div>
-            <div className="col-md-6">
+            <div className="col-md-4">
               <label htmlFor="salaryType" className="form-label">Select Salary Type:</label>
-              <select id="salaryType" className="form-select" value={salaryType} onChange={(e) => setSalaryType(e.target.value)}>
+              <select id="salaryType" className="form-select" value={salaryType} onChange={handleSalaryTypeChange}>
                 <option value="">Select Salary Type</option>
                 <option value="hourly">Hourly</option>
-                <option value="salary">Salary</option>
+                <option value="monthly">Monthly</option>
               </select>
             </div>
-          </div>
-          {/* Other input fields for group selection, project selection, and Excel sheet upload */}
-          <div className="row mb-3">
-            <div className="col-md-6">
+            <div className="col-md-4">
               <label htmlFor="group" className="form-label">Select Group:</label>
-              <select id="group" className="form-select" value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}>
+              <select id="group" className="form-select" value={selectedGroup} onChange={handleGroupChange}>
                 <option value="">Select Group</option>
                 {groups.map(group => (
                   <option key={group._id} value={group.groupName}>{group.groupName}</option>
                 ))}
               </select>
             </div>
+          </div>
+          <div className="row mb-3">
             <div className="col-md-6">
               <label htmlFor="project" className="form-label">Select Project:</label>
-              <select id="project" className="form-select" value={selectedProject} onChange={(e) => setSelectedProject(e.target.value)}>
+              <select id="project" className="form-select" value={selectedProject} onChange={handleProjectChange}>
                 <option value="">Select Project</option>
                 {dummyProjects.map(project => (
                   <option key={project} value={project}>{project}</option>
@@ -78,31 +114,30 @@ const EmployeeAttendance = () => {
             </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="excel" className="form-label">Upload Excel Sheet:</label>
-            <input type="file" id="excel" className="form-control" accept=".xlsx, .xls" />
+            <button type="submit" className="btn btn-primary">Fetch Employees</button>
           </div>
-          <button type="submit" className="btn">Submit</button>
         </form>
-        {/* Display list of employees with attendance status */}
         <div className="attendance-list mt-5">
-          <h3>Employee Attendance</h3>
-          <table className="table group-table table-striped">
+          <h3>Employee List</h3>
+          <table className="table table-striped">
             <thead>
               <tr>
-                <th className='table-header'>Employee Name</th>
-                <th className='table-header'>Attendance Status</th>
+                <th>Employee Name</th>
+                <th>Attendance Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Sania</td>
-                <td>
-                  <select>
-                    <option value="P">P</option>
-                    <option value="A">A</option>
-                  </select>
-                </td>
-              </tr>
+              {employees.map(employee => (
+                <tr key={employee.empID}>
+                  <td>{employee.empName}</td>
+                  <td>
+                    <select>
+                      <option value="P">Present</option>
+                      <option value="A">Absent</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
