@@ -3,14 +3,17 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors'); 
 
+// Import models
 const Addgroup = require('./src/models/Addgroup');
 const Addemployee = require('./src/models/Addemployee');
-const EmployeeIssue = require('./src/models/employeeissue'); // Import the EmployeeIssue model
+const EmployeeIssue = require('./src/models/employeeissue'); 
+
 
 // Import routes
 const addgroupRoutes = require('./src/routes/Addgroup');
 const addEmployeeRoutes = require('./src/routes/Addemployee');
-const employeeIssueRoutes = require('./src/routes/employeeissue'); // Import the employeeissue routes
+const employeeIssueRoutes = require('./src/routes/employeeissue'); 
+
 
 const app = express();
 const port = 5000;
@@ -27,8 +30,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/Alsyed', {
 app.use(bodyParser.json());
 app.use('/api', addgroupRoutes);
 app.use('/api', addEmployeeRoutes);
-app.use('/api', employeeIssueRoutes); // Mount the employeeissue routes
-
+app.use('/api', employeeIssueRoutes);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

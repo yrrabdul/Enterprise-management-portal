@@ -11,7 +11,6 @@ const EmployeeAttendance = () => {
   const [salaryType, setSalaryType] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
-  const [attendanceData, setAttendanceData] = useState([]);
   const [groups, setGroups] = useState([]);
   const [employees, setEmployees] = useState([]);
 
@@ -40,13 +39,7 @@ const EmployeeAttendance = () => {
     }
   
     try {
-      const response = await axios.get('http://localhost:5000/api/getemployees', {
-        params: {
-          group: selectedGroup,
-          project: selectedProject,
-          salaryType: salaryType
-        }
-      });
+      const response = await axios.get('http://localhost:5000/api/getemployees');
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -122,26 +115,64 @@ const EmployeeAttendance = () => {
           <table className="table table-striped">
             <thead>
               <tr>
+                <th className='table-header'>Employee ID</th>
                 <th className='table-header'>Employee Name</th>
                 <th className='table-header'>Group Name</th>
                 <th className='table-header'>Project</th>
+                {salaryType === 'hourly' && (
+                  <>
+                    <th className='table-header'>Normal Working Hours</th>
+                    <th className='table-header'>Overtime Working Hours</th>
+                  </>
+                )}
                 <th className='table-header'>Attendance Status</th>
               </tr>
             </thead>
             <tbody>
-              {employees.map(employee => (
-                <tr key={employee.empID}>
-                  <td>{employee.empName}</td>
-                  <td>{employee.empGroup}</td>
-                  <td>{employee.empProject}</td>
-                  <td>
-                    <select>
-                      <option value="P">Present</option>
-                      <option value="A">Absent</option>
-                    </select>
-                  </td>
-                </tr>
-              ))}
+              {employees.map(employee => {
+                const isGroupMatch = employee.groupName === selectedGroup;
+                const isProjectMatch = employee.projects.includes(selectedProject);
+                const isSalaryTypeMatch = employee.salaryType === salaryType;
+
+                if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
+                  return (
+                    <tr key={employee._id}>
+                      <td>{employee.empID}</td>
+                      <td>{employee.empName}</td>
+                      <td>{employee.groupName}</td>
+                      <td>{selectedProject}</td>
+                      {salaryType === 'hourly' && (
+                        <>
+                          <td><input type="number" /></td>
+                          <td><input type="number" /></td>
+                        </>
+                      )}
+                      <td>
+                        <div>
+                          <label>
+                            <input
+                              type="radio"
+                              name={`attendance_${employee._id}`}
+                              value="P"
+                            />
+                            Present
+                          </label>
+                          <label>
+                            <input
+                              type="radio"
+                              name={`attendance_${employee._id}`}
+                              value="A"
+                            />
+                            Absent
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                } else {
+                  return null;
+                }
+              })}
             </tbody>
           </table>
         </div>
