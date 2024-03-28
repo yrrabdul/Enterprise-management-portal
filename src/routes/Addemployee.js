@@ -52,7 +52,7 @@ router.put('/updateemployee/:id', async (req, res) => {
         employee.normalRate = normalRate;
         employee.overRate = overRate;
         employee.picture = picture;
-        employee.document = document;
+        // employee.document = document;
         employee.active = active;
 
         // Save updated employee
@@ -87,6 +87,69 @@ router.put('/updateactive/:id', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+//route to update monthly salary of employee
+router.put('/updateMonthly/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { monthlySalary } = req.body;
+
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, { monthlySalary }, { new: true });
+
+        res.status(200).json(updatedEmployee);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to update overtime rate of employee
+router.put('/updateOverRate/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { overRate } = req.body;
+
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, { overRate }, { new: true });
+
+        res.status(200).json(updatedEmployee);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to update normal rate of employee
+router.put('/updateNormalRate/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { normalRate } = req.body;
+
+        const updatedEmployee = await Employee.findByIdAndUpdate(id, { normalRate }, { new: true });
+
+        res.status(200).json(updatedEmployee);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Route to delete an employee by ID
+router.delete('/deleteemployee/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the employee by ID and delete it
+        const deletedEmployee = await Employee.findByIdAndDelete(id);
+
+        // Check if the employee exists
+        if (!deletedEmployee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        res.status(200).json({ message: 'Employee deleted successfully', deletedEmployee });
+    } catch (error) {
+        console.error('Error deleting employee:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
 
 // Route to assign projects to an employee by ID
 router.post('/assignprojects/:id', async (req, res) => {

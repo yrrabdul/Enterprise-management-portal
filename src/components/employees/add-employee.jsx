@@ -21,14 +21,12 @@ const AddEmployeePage = () => {
         picture: null,
         document: null
     });
-    const [activeStatus, setActiveStatus] = useState('Active');
-    const [isEditing, setIsEditing] = useState(false);
+    // const [activeStatus, setActiveStatus] = useState('Active');
+    // const [isEditing, setIsEditing] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState('');
     const [employees, setEmployees] = useState([]);
     const [editRowIndex, setEditRowIndex] = useState(null);
     const [editingEmployeeID, setEditingEmployeeID] = useState(null);
-
-
 
     useEffect(() => {
         fetchGroups();
@@ -76,26 +74,42 @@ const AddEmployeePage = () => {
         setFormData({ ...formData, salaryType: e.target.value });
     };
 
-    //save in database 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         const formDataWithFiles = new FormData();
-        // Append fields with non-empty values to formDataWithFiles
         for (const key in formData) {
             // Check if the field has a non-empty value
             if (formData[key] !== '' && formData[key] !== null) {
+                // Exclude monthlySalary if salaryType is hourly
+                if (formData['salaryType'] === 'hourly' && key === 'monthlySalary') {
+                    continue;
+                }
+                // Exclude normalRate and overRate if salaryType is monthly
+                if (formData['salaryType'] === 'monthly' && (key === 'normalRate' || key === 'overRate')) {
+                    continue;
+                }
                 formDataWithFiles.append(key, formData[key]);
             }
-        }  
+        }
         // Convert formDataWithFiles to JSON format
         const formDataJSON = {};
         for (const [key, value] of formDataWithFiles.entries()) {
             formDataJSON[key] = value;
         }
-        console.log(formDataJSON);    
+          
+        // Log formDataJSON before making the PUT request
+        console.log('formDataJSON before PUT:', formDataJSON);
+    
         try {
-            await axios.post('http://localhost:5000/api/addemployee', formDataJSON);
+            if (editingEmployeeID) {
+                // If editingEmployeeID is present, it means we are updating an existing employee
+                await axios.put(`http://localhost:5000/api/updateemployee/${editingEmployeeID}`, formDataJSON);
+                alert('Employee updated successfully');
+            } else {
+                // If editingEmployeeID is not present, it means we are adding a new employee
+                await axios.post('http://localhost:5000/api/addemployee', formDataJSON);
+                alert('Employee added successfully');
+            }
             // Reset form data after successful submission
             setFormData({
                 empName: '',
@@ -113,12 +127,13 @@ const AddEmployeePage = () => {
                 picture: null,
                 document: null
             });
-            alert('Employee added successfully');
+            fetchEmployees();
         } catch (error) {
-            console.error('Error adding employee:', error);
-            alert('Error adding employee');
+            console.error('Error:', error);
+            alert('Error submitting data');
         }
     };
+    
       
     const handleEdit = (employee, index) => {
         setSelectedStatus(employee.active);
@@ -162,6 +177,16 @@ const AddEmployeePage = () => {
 
     const handleRadioChange = (e) => {
         setSelectedStatus(e.target.value);
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:5000/api/deleteemployee/${id}`);
+            fetchEmployees(); // Refresh the list of employees after deletion
+        } catch (error) {
+            console.error('Error deleting employee:', error);
+            alert('Error deleting employee');
+        }
     };
 
     return (
@@ -310,8 +335,11 @@ const AddEmployeePage = () => {
                                             <button className="btn btn" onClick={() => handleEditRow(employee)}>Edit</button>
                                         </td>
                                         <td>
-                                            <button className="btn btn">Delete</button>
+                                            <div key={employee.empID}>
+                                                <button className="btn btn-danger" onClick={() => handleDelete(employee._id)}>Delete</button>
+                                            </div>
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>

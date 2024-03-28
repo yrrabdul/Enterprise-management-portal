@@ -33,8 +33,20 @@ const EmployeeGroups = () => {
     }
   };
 
-  const handleDeleteGroup = async (id) => {
+  const handleDeleteGroup = async (id, groupName) => {
     try {
+      // Retrieve the list of employees
+      const response = await axios.get('http://localhost:5000/api/getemployees');
+      const employees = response.data;
+  
+      // Check if any employee is associated with the group
+      const associatedEmployees = employees.filter(employee => employee.groupName === groupName);
+      if (associatedEmployees.length > 0) {
+        // If there are associated employees, show an error message
+        alert('Cannot delete group. Employees are associated with this group.');
+        return;
+      }
+      // If there are no associated employees, proceed with deletion
       await axios.delete(`http://localhost:5000/api/deletegroup/${id}`);
       const updatedGroups = groups.filter(group => group._id !== id);
       setGroups(updatedGroups);
@@ -42,7 +54,7 @@ const EmployeeGroups = () => {
       console.error('Error deleting group:', error);
     }
   };
-
+  
   const handleEditGroup = async (id, newGroupName) => {
     try {
       await axios.put(`http://localhost:5000/api/updategroup/${id}`, { groupName: newGroupName });
@@ -101,7 +113,7 @@ const EmployeeGroups = () => {
                       ) : ( group.groupName)}
                     </td>
                     <td>
-                      <button className="btn" onClick={() => handleDeleteGroup(group._id)}>Delete</button>{' '}
+                      <button className="btn" onClick={() => handleDeleteGroup(group._id, group.groupName)}>Delete</button>{' '}
                       <button className="btn" onClick={() => setEditGroupId(group._id)}>Edit</button>
                     </td>
                   </tr>
