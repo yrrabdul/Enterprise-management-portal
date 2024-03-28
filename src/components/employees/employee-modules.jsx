@@ -59,7 +59,7 @@ const EmployeeModules = () => {
               </Link>
             </div>
             <div className="col-lg-4 col-sm-6 col-md-4 employee-card">
-              <Link>
+              <Link to='/employees/employee-report'>
                 <div className="card bg-light text-center">
                   <div className="card-body">
                     <i className="fas fa-chart-bar fa-3x mb-2"></i>

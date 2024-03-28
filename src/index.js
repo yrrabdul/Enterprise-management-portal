@@ -27,6 +27,7 @@ import AddEmployeePage from './components/employees/add-employee';
 import EmployeeSalaryPage from './components/employees/employee-salary';
 import EmployeeAttendance from './components/employees/employee-attendance';
 import EmployeesIssue from './components/employees/employee-issue';
+import EmployeeReport from './components/employees/employee-report';
 
 
 // New Component to combine Employees and EmployeeModules
@@ -45,6 +46,16 @@ const EmployeeGrps = () => {
     <>
       <Employees />
       <EmployeeGroups />
+    </>
+  );
+};
+
+// New Component to combine Employees and EmployeeReport
+const ReportEmployees = () => {
+  return (
+    <>
+      <Employees />
+      <EmployeeReport />
     </>
   );
 };
@@ -107,6 +118,7 @@ root.render(
         <Route path="/employees/employee-salary" element={<EmployeeSalary />} />
         <Route path="/employees/employee-issue" element={<ProjectIssue />} />
         <Route path="/employees/employee-attendance" element={<Attendance />} />
+        <Route path="/employees/employee-report" element={<ReportEmployees />} />
         <Route path="/documents" element={<Documents />} />
         <Route path="/general-reports" element={<GeneralReports />} />
         <Route path="/purchase" element={<Purchase />} />

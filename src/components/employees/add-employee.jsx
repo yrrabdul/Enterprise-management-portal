@@ -271,7 +271,7 @@ const AddEmployeePage = () => {
                 <div className="row mt-4">
                     <div className="col-md-6 col-lg-12 col-sm-4">
                         <h2>All Employees</h2>
-                        <table className="table add-employee-table table-striped ">
+                        <table className="table table-striped ">
                             <thead>
                                 <tr>
                                     <th className='table-header'>Code #</th>

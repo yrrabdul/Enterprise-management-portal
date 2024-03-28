@@ -122,14 +122,18 @@ const EmployeeAttendance = () => {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Employee Name</th>
-                <th>Attendance Status</th>
+                <th className='table-header'>Employee Name</th>
+                <th className='table-header'>Group Name</th>
+                <th className='table-header'>Project</th>
+                <th className='table-header'>Attendance Status</th>
               </tr>
             </thead>
             <tbody>
               {employees.map(employee => (
                 <tr key={employee.empID}>
                   <td>{employee.empName}</td>
+                  <td>{employee.empGroup}</td>
+                  <td>{employee.empProject}</td>
                   <td>
                     <select>
                       <option value="P">Present</option>
