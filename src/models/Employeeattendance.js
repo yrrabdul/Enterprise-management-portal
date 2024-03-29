@@ -21,17 +21,28 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
   },
   attendanceStatus: {
     type: String,
-    // enum: ['P', 'A'], // 'P' for Present, 'A' for Absent
     required: true
   },
   // Additional fields for hourly employees
-  normalWorkingHours: {
-    type: Number,
-    default: 0 // Default value set to 0
+  normalStartTime: {
+    type: String,
+    required: true,
+    default: '00:00'
   },
-  overtimeWorkingHours: {
-    type: Number,
-    default: 0 // Default value set to 0
+  normalEndTime: {
+    type: String,
+    required: true,
+    default: '00:00'
+  },
+  overtimeStartTime: {
+    type: String,
+    required: true,
+    default: '00:00'
+  },
+  overtimeEndTime: {
+    type: String,
+    required: true,
+    default: '00:00'
   }
 });
 

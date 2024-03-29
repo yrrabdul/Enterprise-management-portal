@@ -97,8 +97,10 @@ const EmployeeAttendance = () => {
           groupName: selectedGroup,
           employeeProject: selectedProject,
           attendanceStatus: data.attendanceStatus,
-          normalWorkingHours: data.normalHours,
-          overtimeWorkingHours: data.overtimeHours
+          normalStartTime: data.normalStartTime,
+          normalEndTime: data.normalEndTime,
+          overtimeStartTime: data.overtimeStartTime,
+          overtimeEndTime: data.overtimeEndTime
         };
 
         // Make POST request to save attendance data for the current row
@@ -167,8 +169,10 @@ const EmployeeAttendance = () => {
                 <th className='table-header'>Project</th>
                 {salaryType === 'hourly' && (
                   <>
-                    <th className='table-header'>Normal Working Hours</th>
-                    <th className='table-header'>Overtime Working Hours</th>
+                    <th className='table-header'>Normal Start Time</th>
+                    <th className='table-header'>Normal End Time</th>
+                    <th className='table-header'>Overtime Start Time</th>
+                    <th className='table-header'>Overtime End Time</th>
                   </>
                 )}
                 <th className='table-header'>Attendance Status</th>
@@ -189,8 +193,10 @@ const EmployeeAttendance = () => {
                       <td>{selectedProject}</td>
                       {salaryType === 'hourly' && (
                         <>
-                          <td><input type="number" onChange={(e) => handleInputChange(employee._id, 'normalHours', e.target.value)} /></td>
-                          <td><input type="number" onChange={(e) => handleInputChange(employee._id, 'overtimeHours', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'normalStartTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'normalEndTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'overtimeStartTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'overtimeEndTime', e.target.value)} /></td>
                         </>
                       )}
                       <td>

@@ -14,6 +14,9 @@ const EmployeeReport = () => {
   const [reportData, setReportData] = useState([]);
   const [groups, setGroups] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [empData,setEmpData] = useState([])
+  const [empAtten,setEmpAtten] = useState([])
+
 
   // Hardcoded dummy projects
   const dummyProjects = ['Project A', 'Project B', 'Project C'];
@@ -23,13 +26,6 @@ const EmployeeReport = () => {
     fetchGroups();
     fetchEmployee();
   }, []);
-
-  // Function to handle form submission
-  // const handleFetch = (e) => {
-  //   e.preventDefault();
-  //   // Logic to fetch report data based on selected criteria
-  //   console.log('Fetching report data');
-  // };
 
   // Function to fetch group names
   const fetchGroups = async () => {
@@ -69,31 +65,122 @@ const EmployeeReport = () => {
     setSelectedProject(e.target.value);
   };
   const handleEmployeeChange = (e) => {
+    console.log(e.target.value)
     setSelectedEmployee(e.target.value);
   }
 
   // Function to handle form submission
-const handleFetch = async (e) => {
-  e.preventDefault();
-  try {
-    // Make an HTTP request to your backend API
-    const response = await axios.get('http://localhost:5000/api/getemployees', {
-      params: {
-        salaryType: salaryType,
-        employeeName: selectedEmployee
-      }
-    });
-
-    // Update the report data state with the fetched data
-    setReportData(response.data);
-  } catch (error) {
-    console.error('Error fetching report data:', error);
-    // Handle error if needed
-  }
-};
-
+  // const handleFetch = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     // Make an HTTP request to your backend API for attendance data filtered by group name
+  //     const response = await axios.get('http://localhost:5000/api/getAttendance', {
+  //       params: {
+  //         groupName: selectedGroup
+  //       }
+  //     });
   
+  //     // Update the report data state with the fetched attendance data
+  //     setReportData(response.data);
+  //   } catch (error) {
+  //     console.error('Error fetching report data:', error);
+  //     // Handle error if needed
+  //   }
+  // };
 
+  const handleFetch = async (e) => {
+    e.preventDefault();
+    try {
+      // Make HTTP requests to fetch data from multiple endpoints simultaneously
+      const [attendanceResponse, employeesResponse] = await Promise.all([
+        axios.get('http://localhost:5000/api/getAttendance', {
+          params: {
+            groupName: selectedGroup
+          }
+        }),
+        axios.post('http://localhost:5000/api/getEmp',{emp:selectedEmployee})
+      ]);
+ 
+      // Extract data from responses
+      const attendanceData = attendanceResponse.data;
+      const employeesData = employeesResponse.data;
+
+      // Update state with fetched data
+      setEmpAtten(attendanceData);
+      setEmpData(employeesData);
+  
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error if needed
+    }
+  };
+const handleFilter = () => {
+  console.log("Here");
+  if (empData[0]["salaryType"] === salaryType && empData[0]["groupName"] === selectedGroup) {
+    console.log("empData", empData);
+    let isData = empAtten.filter(f => f.empID === empData[0]["_id"] && f.employeeProject === selectedProject && f.attendanceStatus === "P");
+    let isDataA = empAtten.filter(f => f.empID === empData[0]["_id"] && f.employeeProject === selectedProject && f.attendanceStatus === "A");
+    console.log("isData", isData);
+    console.log("isDataA:", isDataA);
+    const countP = isData.length;
+    console.log("Count of 'P' status:", countP);
+    const countA = isDataA.length;
+    console.log("Count of 'A' status: " , countA);
+
+    // if (isData.length > 0) {
+    //   const hours = isData.reduce((acc, cur) => {
+    //     const { normalWorkingHours, overtimeWorkingHours } = cur;
+    //     acc.totalNormal += normalWorkingHours;
+    //     acc.totalOver += overtimeWorkingHours;
+    //     return acc;
+    //   }, { totalNormal: 0, totalOver: 0 });
+    if (isData.length > 0) {
+      const hours = isData.reduce((acc, cur) => {
+          const { normalEndTime, normalStartTime, overtimeEndTime, overtimeStartTime } = cur;
+  
+          // Calculating the differences
+          const normalHoursDifference = getTimeDifference(normalEndTime, normalStartTime);
+          const overtimeHoursDifference = getTimeDifference(overtimeEndTime, overtimeStartTime);
+  
+          // Adding the differences to the accumulator
+          acc.totalNormal += normalHoursDifference;
+          acc.totalOver += overtimeHoursDifference;
+  
+          return acc;
+      }, { totalNormal: 0, totalOver: 0 });
+
+      const { totalNormal, totalOver } = hours;
+      const { overRate, normalRate, monthlySalary} = empData[0];
+      const mOneSalary = monthlySalary/20;
+      console.log("moneSalary", mOneSalary);
+      const deductSalary = mOneSalary * countA;
+      console.log("deductSalary:",deductSalary);
+      console.log("overRate: ", overRate);
+      console.log("normalRate: ", normalRate);
+      const obj = { ...hours, normSal: totalNormal * normalRate, overSal: totalOver * overRate, monthlySalary, countP, countA,deductSalary };
+
+      console.log("object is: ",obj);
+      setReportData([obj]);
+    } else {
+      setReportData([]);
+    }
+  } else {
+    setReportData([]);
+  }
+}
+
+// Function to calculate time difference
+function getTimeDifference(endTime, startTime) {
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+
+    const totalEndMinutes = endHour * 60 + endMinute;
+    const totalStartMinutes = startHour * 60 + startMinute;
+
+    return (totalEndMinutes - totalStartMinutes) / 60; // Converting minutes to hours
+}
+
+// console.log(empAtten,empData)
   return (
     <div className="report-main">
       <div className="container">
@@ -142,7 +229,7 @@ const handleFetch = async (e) => {
               <select id="employee" className="form-select" value={selectedEmployee} onChange={handleEmployeeChange}>
                 <option value="">Select Employee</option>
                 {employees.map((employee) => (
-                <option key={employee.id} value={employee.id}>
+                <option key={employee.id} value={employee.empName}>
                   {employee.name}
                 </option>
               ))}
@@ -159,6 +246,7 @@ const handleFetch = async (e) => {
           </div>
           <button type="submit" className="btn btn-primary">Fetch</button>
         </form>
+        <button onClick={() => handleFilter()}>Show Data</button>
         {/* Display report data in a table */}
         <div className="report-data mt-5">
           <h3>Report Data</h3>
@@ -200,6 +288,44 @@ const handleFetch = async (e) => {
                   {selectedSummaryDetail !== 'summary' && (
                     <>
                       <td>{selectedProject}</td>
+                      <td>{selectedGroup}</td>
+                    </>
+                  )}
+                  <td>{selectedEmployee}</td>
+                  {selectedSummaryDetail !== 'summary' && salaryType === 'hourly' && (
+                    <>
+                      <td>{rowData.totalNormal}</td>
+                      <td>{rowData.totalOver}</td>
+                      <td>{(rowData.totalNormal+rowData.totalOver)/2}</td>
+                      <td>{rowData.normSal+rowData.overSal}</td>
+                    </>
+                  )}
+                  {selectedSummaryDetail !== 'summary' && salaryType === 'monthly' && (
+                    <>
+                      <td>{rowData.countP}</td>
+                      <td>{rowData.countA}</td>
+                      <td>{rowData.monthlySalary}</td>
+                      <td>{rowData.monthlySalary-rowData.deductSalary}</td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default EmployeeReport;
+
+{/* <tbody>
+              {reportData.map((rowData, index) => (
+                <tr key={index}>
+                  {selectedSummaryDetail !== 'summary' && rowData.groupName === selectedGroup && (
+                    <>
+                      <td>{selectedProject}</td>
                       <td>{rowData.groupName}</td>
                     </>
                   )}
@@ -222,12 +348,4 @@ const handleFetch = async (e) => {
                   )}
                 </tr>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default EmployeeReport;
+            </tbody> */}
