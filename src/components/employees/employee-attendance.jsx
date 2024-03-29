@@ -13,6 +13,7 @@ const EmployeeAttendance = () => {
   const [selectedProject, setSelectedProject] = useState('');
   const [groups, setGroups] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [attendanceData, setAttendanceData] = useState([]);
 
   // Hardcoded dummy projects
   const dummyProjects = ['Project A', 'Project B', 'Project C'];
@@ -45,7 +46,7 @@ const EmployeeAttendance = () => {
       console.error('Error fetching employees:', error);
     }
   };
-  
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,6 +66,51 @@ const EmployeeAttendance = () => {
   // Handle project selection change
   const handleProjectChange = (e) => {
     setSelectedProject(e.target.value);
+  };
+
+  // Function to handle input change and update the attendanceData state
+  const handleInputChange = (employeeId, field, value) => {
+    const index = attendanceData.findIndex(data => data.employeeId === employeeId);
+
+    if (index === -1) {
+      setAttendanceData(prevData => [
+        ...prevData,
+        { employeeId, [field]: value }
+      ]);
+    } else {
+      setAttendanceData(prevData => {
+        const newData = [...prevData];
+        newData[index][field] = value;
+        return newData;
+      });
+    }
+  };
+
+  // Handle submission of attendance data
+  const handleAttendanceSubmit = async () => {
+    try {
+      // Iterate through attendanceData and send attendance data for each employee
+      for (const data of attendanceData) {
+        const rowData = {
+          date: selectedDate,
+          empID: data.employeeId,
+          groupName: selectedGroup,
+          employeeProject: selectedProject,
+          attendanceStatus: data.attendanceStatus,
+          normalWorkingHours: data.normalHours,
+          overtimeWorkingHours: data.overtimeHours
+        };
+
+        // Make POST request to save attendance data for the current row
+        await axios.post('http://localhost:5000/api/saveAttendance', rowData);
+      }
+      
+      // Display success message
+      alert('Attendance data saved successfully');
+    } catch (error) {
+      console.error('Error saving attendance data:', error);
+      alert('Failed to save attendance data');
+    }
   };
 
   return (
@@ -143,8 +189,8 @@ const EmployeeAttendance = () => {
                       <td>{selectedProject}</td>
                       {salaryType === 'hourly' && (
                         <>
-                          <td><input type="number" /></td>
-                          <td><input type="number" /></td>
+                          <td><input type="number" onChange={(e) => handleInputChange(employee._id, 'normalHours', e.target.value)} /></td>
+                          <td><input type="number" onChange={(e) => handleInputChange(employee._id, 'overtimeHours', e.target.value)} /></td>
                         </>
                       )}
                       <td>
@@ -154,6 +200,7 @@ const EmployeeAttendance = () => {
                               type="radio"
                               name={`attendance_${employee._id}`}
                               value="P"
+                              onChange={(e) => handleInputChange(employee._id, 'attendanceStatus', e.target.value)}
                             />
                             Present
                           </label>
@@ -162,6 +209,7 @@ const EmployeeAttendance = () => {
                               type="radio"
                               name={`attendance_${employee._id}`}
                               value="A"
+                              onChange={(e) => handleInputChange(employee._id, 'attendanceStatus', e.target.value)}
                             />
                             Absent
                           </label>
@@ -175,6 +223,9 @@ const EmployeeAttendance = () => {
               })}
             </tbody>
           </table>
+          <div className="mb-3">
+            <button onClick={handleAttendanceSubmit} className="btn btn-primary">Submit Attendance</button>
+          </div>
         </div>
       </div>
     </div>
