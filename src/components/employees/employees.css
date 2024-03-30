@@ -5,7 +5,9 @@
   z-index: 1000;
   width: 100%;
 }
-
+.nav-heading{
+  color: black;
+}
 h4{
 padding-left: 10px;
 }
@@ -24,7 +26,7 @@ height: 72px;
 }
 
 .employee-card .card.bg-light{
-  background-color: #E2F4C5 !important;
+  background-color: #FFC94A !important;
 }
 .employee-card .card.bg-light:hover {
   border: 2px solid black;
