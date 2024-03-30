@@ -11,6 +11,10 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  empName: { 
+    type: String, 
+    required: true 
+  },
   groupName: {
     type: String,
     required: true
@@ -21,18 +25,38 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
   },
   attendanceStatus: {
     type: String,
-    // enum: ['P', 'A'], // 'P' for Present, 'A' for Absent
     required: true
   },
+  salaryType: { 
+    type: String,
+    // required: true
+},
   // Additional fields for hourly employees
-  normalWorkingHours: {
-    type: Number,
-    default: 0 // Default value set to 0
+  normalStartTime: {
+    type: String,
+    // required: true
   },
-  overtimeWorkingHours: {
-    type: Number,
-    default: 0 // Default value set to 0
-  }
+  normalEndTime: {
+    type: String,
+    // required: true
+  },
+  overtimeStartTime: {
+    type: String,
+    // required: true
+  },
+  overtimeEndTime: {
+    type: String,
+    // required: true
+  },
+  monthlySalary: {
+    type: Number
+  },
+  overRate: {
+    type: Number
+  },
+  normalRate: {
+    type: Number
+  },
 });
 
 // Create and export the EmployeeAttendance model
