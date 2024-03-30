@@ -11,6 +11,10 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  empName: { 
+    type: String, 
+    required: true 
+  },
   groupName: {
     type: String,
     required: true
@@ -23,9 +27,11 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  
   // Additional fields for hourly employees
   normalStartTime: {
     type: String,
+<<<<<<< Updated upstream
     required: true,
     default: '00:00'
   },
@@ -44,6 +50,31 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
     required: true,
     default: '00:00'
   }
+=======
+    // required: true
+  },
+  normalEndTime: {
+    type: String,
+    // required: true
+  },
+  overtimeStartTime: {
+    type: String,
+    // required: true
+  },
+  overtimeEndTime: {
+    type: String,
+    // required: true
+  },
+  monthlySalary: {
+    type: Number
+  },
+  overRate: {
+    type: Number
+  },
+  normalRate: {
+    type: Number
+  },
+>>>>>>> Stashed changes
 });
 
 // Create and export the EmployeeAttendance model
