@@ -74,9 +74,9 @@ const EmployeeGroups = () => {
   return (
     <section className='groups-main'>
       <div className="container">
+            <h2 className="text-center mb-4">Add Group</h2>
         <div className="row mt-4">
           <div className="col-md-6">
-            <h2>Add Group</h2>
             <div className="input-group mb-4">
               <input
                 type="text"

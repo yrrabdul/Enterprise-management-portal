@@ -7,12 +7,17 @@
   --first-color: black;
 
   --first-color-light: white;
-  --hover-color: #9ADE7B;
   --body-font: 'Nunito', sans-serif;
-
+  --bg-color: #FFC94A;
   --normal-font-size: 1rem;
 
   --z-fixed: 100
+}
+.bg-dark{
+  background: var(--bg-color) !important;
+}
+.nav-heading{
+  color: black;
 }
 .dashboard {
     margin-top: -65px;
