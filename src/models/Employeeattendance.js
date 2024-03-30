@@ -31,7 +31,7 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
   // Additional fields for hourly employees
   normalStartTime: {
     type: String,
-<<<<<<< HEAD
+
     // required: true
   },
   normalEndTime: {
@@ -55,7 +55,7 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
   normalRate: {
     type: Number
   },
-=======
+
 <<<<<<< Updated upstream
     required: true,
     default: '00:00'
@@ -75,7 +75,7 @@ const EmployeeAttendanceSchema = new mongoose.Schema({
     required: true,
     default: '00:00'
   }
-=======
+
     // required: true
   },
   normalEndTime: {
