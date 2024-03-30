@@ -11,9 +11,9 @@ const EmployeeAttendance = () => {
   const [salaryType, setSalaryType] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
-  const [attendanceData, setAttendanceData] = useState([]);
   const [groups, setGroups] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [attendanceData, setAttendanceData] = useState([]);
 
   // Hardcoded dummy projects
   const dummyProjects = ['Project A', 'Project B', 'Project C'];
@@ -40,19 +40,13 @@ const EmployeeAttendance = () => {
     }
   
     try {
-      const response = await axios.get('http://localhost:5000/api/getemployees', {
-        params: {
-          group: selectedGroup,
-          project: selectedProject,
-          salaryType: salaryType
-        }
-      });
+      const response = await axios.get('http://localhost:5000/api/getemployees');
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
   };
-  
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,6 +66,73 @@ const EmployeeAttendance = () => {
   // Handle project selection change
   const handleProjectChange = (e) => {
     setSelectedProject(e.target.value);
+  };
+
+  // Function to handle input change and update the attendanceData state
+  const handleInputChange = (employeeId, employeeName, employeeData, field, value) => {
+    const index = attendanceData.findIndex(data => data.employeeId === employeeId);
+  
+    if (index === -1) {
+      setAttendanceData(prevData => [
+        ...prevData,
+        { employeeId, employeeName, ...employeeData, [field]: value }
+      ]);
+    } else {
+      setAttendanceData(prevData => {
+        const newData = [...prevData];
+        newData[index][field] = value;
+        // Update other generic data fields
+        Object.assign(newData[index], employeeData);
+        return newData;
+      });
+    }
+  };
+  
+
+  // Handle submission of attendance data
+  const handleAttendanceSubmit = async () => {
+    try {
+      // Iterate through attendanceData and send attendance data for each employee
+      for (const data of attendanceData) {
+        const rowData = {
+          date: selectedDate,
+          empID: data.employeeId,
+          empName: data.employeeName,
+          groupName: selectedGroup,
+          employeeProject: selectedProject,
+          attendanceStatus: data.attendanceStatus,
+          normalStartTime: data.normalStartTime,
+          normalEndTime: data.normalEndTime,
+          overtimeStartTime: data.overtimeStartTime,
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+          overtimeEndTime: data.overtimeEndTime
+=======
+>>>>>>> 5c3b08ee6f3d656a255ee1c31203ff6208a9271d
+          overtimeEndTime: data.overtimeEndTime,
+          monthlySalary:data.monthlySalary,
+          overRate:data.overRate,
+          normalRate:data.normalRate
+
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> 5c3b08ee6f3d656a255ee1c31203ff6208a9271d
+        };
+
+        // Make POST request to save attendance data for the current row
+        await axios.post('http://localhost:5000/api/saveAttendance', rowData);
+      }
+      
+      // Display success message
+      alert('Attendance data saved successfully');
+    } catch (error) {
+      console.error('Error saving attendance data:', error);
+      alert('Failed to save attendance data');
+    }
+     // Clear attendanceData state after successful save
+     setAttendanceData([]);
   };
 
   return (
@@ -122,28 +183,169 @@ const EmployeeAttendance = () => {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th className='table-header'>Employee Name</th>
+                <th className='table-header'>Employee ID</th>
                 <th className='table-header'>Group Name</th>
                 <th className='table-header'>Project</th>
+                {salaryType === 'hourly' && (
+                  <>
+                    <th className='table-header'>Normal Start Time</th>
+                    <th className='table-header'>Normal End Time</th>
+                    <th className='table-header'>Overtime Start Time</th>
+                    <th className='table-header'>Overtime End Time</th>
+                  </>
+                )}
                 <th className='table-header'>Attendance Status</th>
               </tr>
             </thead>
             <tbody>
-              {employees.map(employee => (
-                <tr key={employee.empID}>
-                  <td>{employee.empName}</td>
-                  <td>{employee.empGroup}</td>
-                  <td>{employee.empProject}</td>
-                  <td>
-                    <select>
-                      <option value="P">Present</option>
-                      <option value="A">Absent</option>
-                    </select>
-                  </td>
-                </tr>
-              ))}
+  {employees.map(employee => {
+    const isGroupMatch = employee.groupName === selectedGroup;
+    const isProjectMatch = employee.projects.includes(selectedProject);
+    const isSalaryTypeMatch = employee.salaryType === salaryType;
+<<<<<<< HEAD
+
+    if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
+      return (
+        <tr key={employee._id}>
+          <td>{employee.empID}</td>
+          <td>{employee.groupName}</td>
+          <td>{selectedProject}</td>
+          {salaryType === 'hourly' && (
+            <>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalEndTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeEndTime', e.target.value)} /></td>
+            </>
+          )}
+          <td>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="P"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Present
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="A"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Absent
+              </label>
+            </div>
+          </td>
+        </tr>
+      );
+    } else {
+      return null;
+    }
+  })}
+</tbody>
+
+=======
+
+    if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
+      return (
+        <tr key={employee._id}>
+          <td>{employee.empID}</td>
+          <td>{employee.groupName}</td>
+          <td>{selectedProject}</td>
+          {salaryType === 'hourly' && (
+            <>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalEndTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeEndTime', e.target.value)} /></td>
+            </>
+          )}
+          <td>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="P"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Present
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="A"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Absent
+              </label>
+            </div>
+          </td>
+        </tr>
+      );
+    } else {
+      return null;
+    }
+  })}
+</tbody>
+
+<<<<<<< Updated upstream
+                if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
+                  return (
+                    <tr key={employee._id}>
+                      <td>{employee.empID}</td>
+                      <td>{employee.empName}</td>
+                      <td>{employee.groupName}</td>
+                      <td>{selectedProject}</td>
+                      {salaryType === 'hourly' && (
+                        <>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'normalStartTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'normalEndTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'overtimeStartTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'overtimeEndTime', e.target.value)} /></td>
+                        </>
+                      )}
+                      <td>
+                        <div>
+                          <label>
+                            <input
+                              type="radio"
+                              name={`attendance_${employee._id}`}
+                              value="P"
+                              onChange={(e) => handleInputChange(employee._id, 'attendanceStatus', e.target.value)}
+                            />
+                            Present
+                          </label>
+                          <label>
+                            <input
+                              type="radio"
+                              name={`attendance_${employee._id}`}
+                              value="A"
+                              onChange={(e) => handleInputChange(employee._id, 'attendanceStatus', e.target.value)}
+                            />
+                            Absent
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                } else {
+                  return null;
+                }
+              })}
             </tbody>
+=======
+>>>>>>> Stashed changes
+>>>>>>> 5c3b08ee6f3d656a255ee1c31203ff6208a9271d
           </table>
+          <div className="mb-3">
+            <button onClick={handleAttendanceSubmit} className="btn btn-primary">Submit Attendance</button>
+          </div>
         </div>
       </div>
     </div>

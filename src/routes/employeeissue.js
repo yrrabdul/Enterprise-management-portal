@@ -25,8 +25,6 @@ router.get('/getissues', async (req, res) => {
     }
 });
 
-
-
 // Update employee issue by ID
 router.put('/updateissue/:id', async (req, res) => {
     try {
