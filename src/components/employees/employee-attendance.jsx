@@ -69,13 +69,21 @@ const EmployeeAttendance = () => {
   };
 
   // Function to handle input change and update the attendanceData state
+<<<<<<< HEAD
   const handleInputChange = (employeeId, employeeName,salaryType, employeeData, field, value) => {
+=======
+  const handleInputChange = (employeeId, employeeName, employeeData, field, value) => {
+>>>>>>> 78e71b4e9e1252a71ba42dc22fed382409b67333
     const index = attendanceData.findIndex(data => data.employeeId === employeeId);
   
     if (index === -1) {
       setAttendanceData(prevData => [
         ...prevData,
+<<<<<<< HEAD
         { employeeId, employeeName, salaryType,...employeeData, [field]: value }
+=======
+        { employeeId, employeeName, ...employeeData, [field]: value }
+>>>>>>> 78e71b4e9e1252a71ba42dc22fed382409b67333
       ]);
     } else {
       setAttendanceData(prevData => {
@@ -101,15 +109,34 @@ const EmployeeAttendance = () => {
           groupName: selectedGroup,
           employeeProject: selectedProject,
           attendanceStatus: data.attendanceStatus,
+<<<<<<< HEAD
           salaryType:data.salaryType,
           normalStartTime: data.normalStartTime,
           normalEndTime: data.normalEndTime,
           overtimeStartTime: data.overtimeStartTime,
+=======
+          normalStartTime: data.normalStartTime,
+          normalEndTime: data.normalEndTime,
+          overtimeStartTime: data.overtimeStartTime,
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+          overtimeEndTime: data.overtimeEndTime
+=======
+>>>>>>> 5c3b08ee6f3d656a255ee1c31203ff6208a9271d
+>>>>>>> 78e71b4e9e1252a71ba42dc22fed382409b67333
           overtimeEndTime: data.overtimeEndTime,
           monthlySalary:data.monthlySalary,
           overRate:data.overRate,
           normalRate:data.normalRate
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> 5c3b08ee6f3d656a255ee1c31203ff6208a9271d
+>>>>>>> 78e71b4e9e1252a71ba42dc22fed382409b67333
         };
 
         // Make POST request to save attendance data for the current row
@@ -193,6 +220,7 @@ const EmployeeAttendance = () => {
     const isGroupMatch = employee.groupName === selectedGroup;
     const isProjectMatch = employee.projects.includes(selectedProject);
     const isSalaryTypeMatch = employee.salaryType === salaryType;
+<<<<<<< HEAD
 
     if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
       return (
@@ -238,6 +266,148 @@ const EmployeeAttendance = () => {
   })}
 </tbody>
 
+=======
+<<<<<<< HEAD
+
+    if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
+      return (
+        <tr key={employee._id}>
+          <td>{employee.empID}</td>
+          <td>{employee.groupName}</td>
+          <td>{selectedProject}</td>
+          {salaryType === 'hourly' && (
+            <>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalEndTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeEndTime', e.target.value)} /></td>
+            </>
+          )}
+          <td>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="P"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Present
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="A"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Absent
+              </label>
+            </div>
+          </td>
+        </tr>
+      );
+    } else {
+      return null;
+    }
+  })}
+</tbody>
+
+=======
+
+    if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
+      return (
+        <tr key={employee._id}>
+          <td>{employee.empID}</td>
+          <td>{employee.groupName}</td>
+          <td>{selectedProject}</td>
+          {salaryType === 'hourly' && (
+            <>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'normalEndTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeStartTime', e.target.value)} /></td>
+              <td><input type="time" onChange={(e) => handleInputChange(employee.empID, employee.empName, { normalRate: employee.normalRate, overRate: employee.overRate }, 'overtimeEndTime', e.target.value)} /></td>
+            </>
+          )}
+          <td>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="P"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Present
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={`attendance_${employee.empID}`}
+                  value="A"
+                  onChange={(e) => handleInputChange(employee.empID, employee.empName, { monthlySalary: employee.monthlySalary }, 'attendanceStatus', e.target.value)}
+                />
+                Absent
+              </label>
+            </div>
+          </td>
+        </tr>
+      );
+    } else {
+      return null;
+    }
+  })}
+</tbody>
+
+<<<<<<< Updated upstream
+                if (isGroupMatch && isProjectMatch && isSalaryTypeMatch) {
+                  return (
+                    <tr key={employee._id}>
+                      <td>{employee.empID}</td>
+                      <td>{employee.empName}</td>
+                      <td>{employee.groupName}</td>
+                      <td>{selectedProject}</td>
+                      {salaryType === 'hourly' && (
+                        <>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'normalStartTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'normalEndTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'overtimeStartTime', e.target.value)} /></td>
+                          <td><input type="time" onChange={(e) => handleInputChange(employee._id, 'overtimeEndTime', e.target.value)} /></td>
+                        </>
+                      )}
+                      <td>
+                        <div>
+                          <label>
+                            <input
+                              type="radio"
+                              name={`attendance_${employee._id}`}
+                              value="P"
+                              onChange={(e) => handleInputChange(employee._id, 'attendanceStatus', e.target.value)}
+                            />
+                            Present
+                          </label>
+                          <label>
+                            <input
+                              type="radio"
+                              name={`attendance_${employee._id}`}
+                              value="A"
+                              onChange={(e) => handleInputChange(employee._id, 'attendanceStatus', e.target.value)}
+                            />
+                            Absent
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                } else {
+                  return null;
+                }
+              })}
+            </tbody>
+=======
+>>>>>>> Stashed changes
+>>>>>>> 5c3b08ee6f3d656a255ee1c31203ff6208a9271d
+>>>>>>> 78e71b4e9e1252a71ba42dc22fed382409b67333
           </table>
           <div className="mb-3">
             <button onClick={handleAttendanceSubmit} className="btn btn-primary">Submit Attendance</button>

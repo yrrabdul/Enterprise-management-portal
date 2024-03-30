@@ -103,9 +103,9 @@ const EmployeeSalaryPage = () => {
    return (
         <section className='employee-salary-main'>
             <div className="container">
+            <h2 className="text-center mb-4">Employee Salary</h2>
                 <div className="row mt-4">
                     <div className="col-md-6">
-                        <h2>Employee Salary</h2>
                         <div className="row mb-4">
                             <div className="col">
                                 <h5>Select Salary/Rate</h5>

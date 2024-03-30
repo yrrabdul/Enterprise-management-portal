@@ -25,14 +25,14 @@
 }
 
 .btn {
-    background-color: #9ADE7B;
+    background-color: #FFC94A;
     color: black;
     border: none;
   }
 
   .btn:hover{
     background-color: black;
-    color: #9ADE7B;
+    color: #FFC94A;
   }
  
   .salary-table{
@@ -40,7 +40,7 @@
     margin-top: 40px;
   }
   .salary-table tbody tr:nth-child(even) {
-    background-color: #9ADE7B;
+    background-color: #FFC94A;
   }
   
   .salary-table tbody tr:nth-child(odd) {
@@ -48,7 +48,7 @@
   }
   
  .table-header{
-    background-color: #9ADE7B !important;
+    background-color: #FFC94A !important;
  }
 @media screen and (max-width: 768px) {
     .employee-salary-main {

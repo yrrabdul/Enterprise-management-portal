@@ -192,9 +192,9 @@ const AddEmployeePage = () => {
     return (
         <section className='add-employee-main'>
             <div className="container">
+            <h2 className="text-center mb-4">Add Employee</h2>
                 <div className="row mt-4">
                     <div className="col-md-6">
-                        <h2>Add Employee</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="row mb-4">
                                 <div className="col-md-6">

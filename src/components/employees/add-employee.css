@@ -19,14 +19,14 @@
   }
   
   .btn {
-    background-color: #9ADE7B;
+    background-color: #FFC94A;
     color: black;
     border: none;
   }
 
   .btn:hover{
     background-color: black;
-    color: #9ADE7B;
+    color: #FFC94A;
   }
  
   .add-employee-table{
@@ -34,7 +34,7 @@
     margin-top: 40px;
   }
   .add-employee-table tbody tr:nth-child(even) {
-    background-color: #9ADE7B;
+    background-color: #FFC94A;
   }
   
   .add-employee-table tbody tr:nth-child(odd) {
@@ -42,7 +42,7 @@
   }
   
  .table-header{
-    background-color: #9ADE7B !important;
+    background-color: #FFC94A !important;
  }
   
   

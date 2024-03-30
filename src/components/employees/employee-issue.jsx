@@ -78,9 +78,10 @@ const EmployeeIssue = () => {
   };
 
   return (
-    <div className='container issue-main'>
+    <section className='issue-main'>
+      <div className='container'>
+      <h2 className="text-center mb-4">Employee Issue</h2>
       <div className='issue-submain'>
-        <h2>Employee Issue</h2>
         {showAlert && (
           <div className='alert alert-success' role='alert'>
             Project assigned successfully!
@@ -131,9 +132,9 @@ const EmployeeIssue = () => {
             Assign Project
           </button>
         </form>
-        <div></div>
       </div>
     </div>
+    </section>
   );
 };
 

@@ -8,7 +8,7 @@ const Dashboard = () => {
       <div className='dashboard'>
       <nav className="navbar navbar-dark bg-dark dashboard-nav">
       <a className="navbar-brand">
-        <h4>Dashboard</h4>
+        <h4 className='nav-heading'>Dashboard</h4>
       </a>
     </nav>
       </div>
