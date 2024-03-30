@@ -13,6 +13,18 @@ router.post('/addemployee', async (req, res) => {
     }
 });
 
+//
+// Post Create a new employee
+router.post('/getEmp', async (req, res) => {
+    try {
+        const emp = req.body.emp
+        const empData= await Employee.find({empName:emp})
+        res.status(201).send(empData);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
 // Define a GET route to retrieve all employees
 router.get('/getemployees', async (req, res) => {
     try {
