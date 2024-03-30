@@ -4,19 +4,24 @@ const router = express.Router();
 const EmployeeAttendance = require('../models/Employeeattendance');
 
 // Route to save attendance data
-// Route to save attendance data
 router.post('/saveAttendance', async (req, res) => {
-    const { date, empID, groupName, employeeProject, attendanceStatus, normalWorkingHours, overtimeWorkingHours } = req.body;
+    const { date, empID,empName, groupName, employeeProject, attendanceStatus, normalStartTime, normalEndTime, overtimeStartTime, overtimeEndTime, monthlySalary,overRate, normalRate } = req.body;
     try {
       // Create a new EmployeeAttendance document
       const newAttendance = new EmployeeAttendance({
         date,
         empID,
+        empName,
         groupName,
         employeeProject,
         attendanceStatus,
-        normalWorkingHours,
-        overtimeWorkingHours
+        normalStartTime,
+        normalEndTime,
+        overtimeStartTime,
+        overtimeEndTime,
+        monthlySalary,
+        overRate,
+        normalRate
       });
       // Save the new document to the database
       await newAttendance.save();
@@ -25,5 +30,22 @@ router.post('/saveAttendance', async (req, res) => {
       console.error('Error saving attendance data:', error);
       res.status(500).json({ message: 'Failed to save attendance data' });
     }
-  });
+});
+
+// Route to fetch all attendance data for a given employee ID
+router.get('/attendance/:empID', async (req, res) => {
+  const { empID } = req.params;
+
+  try {
+    // Find all attendance records for the given employee ID
+    const attendanceData = await EmployeeAttendance.find({ empID });
+
+    // Send the attendance data as a response
+    res.status(200).json(attendanceData);
+  } catch (error) {
+    console.error('Error fetching attendance data:', error);
+    res.status(500).json({ message: 'Failed to fetch attendance data' });
+  }
+});
+
 module.exports = router;
